@@ -1,7 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ChangeDetectorRef
+} from '@angular/core';
+
 import { ActivatedRoute } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+
+import { Api } from '../../services/api';
+
 @Component({
   selector: 'app-product-details',
   imports: [CommonModule],
@@ -15,7 +22,8 @@ export class ProductDetails implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private http: HttpClient
+    private api: Api,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -24,13 +32,17 @@ export class ProductDetails implements OnInit {
       this.route.snapshot.paramMap.get('id')
     );
 
-    this.http
-      .get(`https://fakestoreapi.com/products/${this.productId}`)
+    console.log('ID:', this.productId);
+
+    this.api
+      .getProductById(this.productId)
       .subscribe((data) => {
+
+        console.log('DATA:', data);
 
         this.product = data;
 
-        console.log(this.product);
+        this.cdr.detectChanges();
 
       });
 

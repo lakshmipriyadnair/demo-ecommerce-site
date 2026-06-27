@@ -5,10 +5,19 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class Api {
+
   constructor(private http: HttpClient) {}
 
   getProducts() {
-    return this.http.get('https://fakestoreapi.com/products');
-
+    return this.http.get(
+      'https://fakestoreapi.com/products'
+    );
   }
+
+  getProductById(id: number) {
+    return this.http.get(
+      `https://fakestoreapi.com/products/${id}`
+    );
+  }
+
 }
